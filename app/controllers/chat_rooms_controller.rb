@@ -13,6 +13,7 @@ class ChatRoomsController < ApplicationController
   # GET /chat_rooms/new
   def new
     @chat_room = ChatRoom.new
+    @creator = current_user
   end
 
   # GET /chat_rooms/1/edit
@@ -25,7 +26,7 @@ class ChatRoomsController < ApplicationController
 
     respond_to do |format|
       if @chat_room.save
-        format.html { redirect_to @chat_room, notice: "Chat room was successfully created." }
+        format.html { redirect_to root_path, notice: "Chat room was successfully created." }
         format.json { render :show, status: :created, location: @chat_room }
       else
         format.html { render :new, status: :unprocessable_entity }

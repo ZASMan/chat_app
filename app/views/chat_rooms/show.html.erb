@@ -1,5 +1,9 @@
 <p id="notice"><%= notice %></p>
 
+<div id="chat_room_json_data_url">
+  <%= "#{chat_room_url(@chat_room.id)}.json" %>
+</div>
+
 <p>
   <strong>User:</strong>
   <%= @chat_room.user_id %>

@@ -1,3 +1,16 @@
 <h1>Welcome Tech Chat</h1>
 
+<h3>Chat Rooms Created</h3>
+
+<div id="created_by_chatrooms_data" class='hidden'>
+  <%= @created_by_chat_rooms %>
+</div>
+
+<ul id="list_all_chatrooms">
+
+</ul>
+
+
+<%= link_to "New Chat Room", new_chat_room_path(user_id: current_user.id) %>
+
 <%= link_to "Sign Out", destroy_user_session_path, method: :delete %>
