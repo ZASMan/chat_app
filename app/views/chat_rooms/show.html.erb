@@ -1,13 +1,25 @@
-<p id="notice"><%= notice %></p>
+<div class='container'>
+  <p id="notice"><%= notice %></p>
 
-<div id="chat_room_json_data_url">
-  <%= "#{chat_room_url(@chat_room.id)}.json" %>
+  <div id="chat_room_json_data_url" class='hidden'>
+    <%= "#{chat_room_url(@chat_room.id)}.json" %>
+  </div>
+
+  <p>
+    <strong>Chat Room Creator:</strong>
+    <%= @chat_room.creator.email %>
+  </p>
+
+  <ul id="chat_room_message_list">
+
+  </ul>
+
+  <form id="message_form">
+    <label for="content">Message Content:</label><br>
+    <input type="text" id="message_content" name="content"><br>
+    <input type="submit" value="Send Message">
+  </form>
+
+  <%= link_to 'Edit', edit_chat_room_path(@chat_room) %> |
+  <%= link_to 'Back', chat_rooms_path %>
 </div>
-
-<p>
-  <strong>User:</strong>
-  <%= @chat_room.user_id %>
-</p>
-
-<%= link_to 'Edit', edit_chat_room_path(@chat_room) %> |
-<%= link_to 'Back', chat_rooms_path %>

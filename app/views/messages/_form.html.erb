@@ -1,0 +1,7 @@
+<%= form_tag new_chat_room_message_path(local_assigns[:chat_room], local_assigns[:chat_room].messages.build)  do %>
+  <div class="field">
+     <label>Message Content:</label><br>
+     <%= text_field_tag 'content' %>
+   </div>
+   <%= submit_tag "Send Message", id: "submit_message_chatroom", onsubmit: "event.preventDefault(); submitChatroomMessage();" %>
+<% end %>

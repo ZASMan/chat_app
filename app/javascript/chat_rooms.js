@@ -25,11 +25,29 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 document.addEventListener("DOMContentLoaded", function() {
-  
   var current_chatroom_div = document.getElementById("chat_room_json_data_url");
-  if (current_chatroom_div) {
-    console.log("current_chatroom_div present");
+  var messages_ul = document.getElementById("chat_room_message_list")
+  var message_form = document.getElementById("message_form");
+  if (current_chatroom_div && messages_ul && message_form) {
+    function submitChatroomMessage(event) {
+      event.preventDefault();
+      new_mesage = new Message(event.content)
+      console.log("New message content is " + JSON.stringify(new_mesage.content));
+    }
+    console.log("all elements loaded");
+    message_form.addEventListener("submit", submitChatroomMessage);
     const CURRENT_CHATROOM_URL = current_chatroom_div.innerHTML;
+    let Message = class {
+      constructor(message) {
+        this.content = message.content
+        this.sender_id = message.sender_id
+        this.recipient_id = message.recipient_id
+      }
+
+      static sendNewMessage() {
+        console.log("Sending message");
+      }
+    }
     let ChatRoom = class {
       constructor(chatroom) {
         this.id = chatroom.id;
@@ -37,15 +55,28 @@ document.addEventListener("DOMContentLoaded", function() {
         this.messages = chatroom.messages;
       }
 
-      static getChatRoom() {
+      static getChatRoomMemberData() {
         fetch(CURRENT_CHATROOM_URL)
         .then(res => res.json())
         .then(chatroomData => {
-          console.log(chatroomData);
+        });
+      }
+
+      static getChatRoomMessages() {
+        fetch(CURRENT_CHATROOM_URL)
+        .then(res => res.json())
+        .then(chatroomData => {
+          chatroomData['messages'].forEach((message_data) => {
+            console.log("Message data is " + JSON.stringify(message_data))
+            new_li = document.createElement("li");
+            sent_at_date = new Date(message_data['created_at'])
+            new_li.innerHTML = "<hr>" +  message_data['content'] + "<br>" + "Sent at: " + sent_at_date + "<hr>"
+            messages_ul.appendChild(new_li)
+          })
         })
       }
     }
-    ChatRoom.getChatRoom();
+    ChatRoom.getChatRoomMessages();
     console.log("Current chatroom div present");
   }
 });
