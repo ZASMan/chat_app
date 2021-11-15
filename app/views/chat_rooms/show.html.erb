@@ -1,10 +1,16 @@
 <div class='container'>
   <p id="notice"><%= notice %></p>
-
+  
+  <!-- TODO: Refactor all these eventually -->
   <div id="chat_room_json_data_url" class='hidden'>
     <%= "#{chat_room_url(@chat_room.id)}.json" %>
   </div>
 
+  <div id="sender_id" class='hidden'><%= current_user.id %></div>
+
+  <div id="chat_room_id" class='hidden'><%= @chat_room.id %></div>
+
+  <div id="participant_ids" class='hidden'><%= @chat_room.participant_ids %></div>
   <p>
     <strong>Chat Room Creator:</strong>
     <%= @chat_room.creator.email %>
