@@ -16,16 +16,26 @@
     <%= @chat_room.creator.email %>
   </p>
 
+  <div id='loading_div' class='hidden'>Refreshing Messages...</div>
+
   <ul id="chat_room_message_list">
 
   </ul>
-
+  
+  <!-- Refactor this in regular javascript and HTML eventually 
   <form id="message_form">
     <label for="content">Message Content:</label><br>
     <input type="text" id="message_content" name="content"><br>
     <input type="submit" value="Send Message">
-  </form>
+  </form> -->
 
-  <%= link_to 'Edit', edit_chat_room_path(@chat_room) %> |
-  <%= link_to 'Back', chat_rooms_path %>
+   <%= form_for @chat_room.messages.build, url: chat_room_messages_path(@chat_room), as: :message, remote: true do |f| %>
+      <%= f.hidden_field :sender_id, value: current_user.id %>
+      <%= f.text_field :content, required: true, placeholder: "Type message here..." %>
+      <%= f.submit "Send Message" %>
+  <% end %>
+
 </div>
+
+
+

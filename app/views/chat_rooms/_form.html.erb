@@ -13,7 +13,12 @@
 
   <div class="field">
     <%= form.hidden_field :user_id, value: @creator.id %>
-    Participants: <%= @creator&.email || @creator&.username %>
+    Creator: <%= @creator&.email || @creator&.username %>
+  </div>
+
+  <div class='field'>
+    Recipient: 
+    <%= form.select :recipient_id, options_for_select(User.all.to_a.reject! { |user| user.id == current_user.id }.map { |user| [user.email, user.id] }) %>
   </div>
 
   <div class="actions">

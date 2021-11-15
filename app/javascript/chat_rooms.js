@@ -27,11 +27,12 @@ document.addEventListener("DOMContentLoaded", function() {
 document.addEventListener("DOMContentLoaded", function() {
   var current_chatroom_div = document.getElementById("chat_room_json_data_url");
   var messages_ul = document.getElementById("chat_room_message_list")
-  var message_form = document.getElementById("message_form");
+  var message_form = document.getElementById("new_message");
   // These will be refatored to backend stuff eventually when I know what I'm doing
   var sender_id = document.getElementById("sender_id");
   var participant_ids = document.getElementById("participant_ids");
   var chat_room_id = document.getElementById("chat_room_id");
+  var loading_div = document.getElementById("loading_div");
   if (current_chatroom_div && messages_ul && message_form && sender_id && participant_ids && chat_room_id) {
     var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     const CURRENT_CHATROOM_URL = current_chatroom_div.innerHTML;
@@ -76,6 +77,7 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     }
     ChatRoom.setChatRoomMessages();
+    /*
     function submitChatroomMessage(event) {
       var message_form = document.getElementById("message_form");
       var message_content = message_form.content.value;
@@ -101,6 +103,18 @@ document.addEventListener("DOMContentLoaded", function() {
 
       event.preventDefault();
     }
-    message_form.addEventListener("submit", submitChatroomMessage);
+    */
+    //message_form.addEventListener("submit", submitChatroomMessage);
+    // Refresh Messages
+    function refreshMessages() {
+      var loading_div = document.getElementById("loading_div");
+      console.log("Refreshing.");
+      var messages_ul = document.getElementById("chat_room_message_list");
+      messages_ul.innerHTML = '';
+      loading_div.classList.remove("hidden");
+      ChatRoom.setChatRoomMessages();
+      loading_div.classList.add("hidden");
+    }
+    //const interval = setInterval(refreshMessages, 3000);
   }
 });

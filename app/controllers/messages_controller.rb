@@ -1,52 +1,23 @@
 class MessagesController < ApplicationController
-  before_action :set_chat_room_and_messages, only: %i[ show edit update destroy ]
-
-  # GET /messages or /messages.json
-  def index
-    @messages = ChatRoom.all
-  end
-
-  # GET /messages/1 or /messages/1.json
-  def show
-  end
 
   # GET /messages/new
   def new
-    @chat_room = ChatRoom.new
+    binding.irb
   end
 
   # POST /messages or /messages.json
   def create
-    @chat_room = ChatRoom.new(chat_room_params)
-
-    respond_to do |format|
-      if @chat_room.save
-        format.html { redirect_to @chat_room, notice: "Chat room was successfully created." }
-        format.json { render :show, status: :created, location: @chat_room }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @chat_room.errors, status: :unprocessable_entity }
-      end
+    # TODO: Refactor this with strong params and multiple responses and all that
+    message_params = params.permit!
+    @chat_room = ChatRoom.find(message_params[:chat_room_id])
+    @message = @chat_room.messages.build(
+      content: message_params[:message][:content],
+      sender_id: message_params[:message][:sender_id],
+      recipient_id: message_params[:message][:recipient_id]
+    )
+    binding.irb
+    if @message.save
+      format.js { render js: "window.location = '#{chat_room_path(@chat_room)}'"}
     end
   end
-
-  # DELETE /messages/1 or /messages/1.json
-  def destroy
-    @chat_room.destroy
-    respond_to do |format|
-      format.html { redirect_to messages_url, notice: "Chat room was successfully destroyed." }
-      format.json { head :no_content }
-    end
-  end
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_chat_room_and_messages
-      @chat_room = ChatRoom.find(params[:id])
-    end
-
-    # Only allow a list of trusted parameters through.
-    def chat_room_params
-      params.require(:chat_room).permit(:user_id)
-    end
 end
